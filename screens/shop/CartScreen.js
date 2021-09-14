@@ -1,9 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 import { colors } from "../../constants/colors";
+import CartItem from "../../components/shop/CartItem";
+import { useDispatch } from "react-redux";
+import { removeFromCart } from "../../store/actions/cartActions";
 
 const CartScreen = () => {
+  const dispatch = useDispatch();
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItemsArray = useSelector((state) => {
     const transformedCartItems = [];
@@ -12,13 +16,13 @@ const CartScreen = () => {
       const cartItemObj = state.cart.items;
       transformedCartItems.push({
         id: key,
-        title: cartItemObj[key].title,
-        price: cartItemObj[key].price,
+        productTitle: cartItemObj[key].productTitle,
+        productPrice: cartItemObj[key].productPrice,
         quantity: cartItemObj[key].quantity,
         sum: cartItemObj[key].sum,
       });
     }
-    return transformedCartItems;
+    return transformedCartItems.sort((a, b) => (a.id > b.id ? 1 : -1));
   });
 
   return (
@@ -34,13 +38,19 @@ const CartScreen = () => {
           disabled={cartItemsArray.length === 0}
         />
       </View>
-      <View style={styles.itemsContainer}>
-        {cartItemsArray.map((item) => (
-          <Text key={item.id} style={styles.item}>
-            {item.title}
-          </Text>
-        ))}
-      </View>
+      <FlatList
+        data={cartItemsArray}
+        renderItem={(itemData) => (
+          <CartItem
+            title={itemData.item.productTitle}
+            amount={itemData.item.sum}
+            quantity={itemData.item.quantity}
+            onRemove={() => {
+              dispatch(removeFromCart(itemData.item.id));
+            }}
+          />
+        )}
+      />
     </View>
   );
 };
