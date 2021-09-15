@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { removeFromCart } from "../../store/actions/cartActions";
 import { addOrder } from "../../store/actions/orderActions";
 import CustomButton from "../../components/UI/CustomButton";
+import Card from "../../components/UI/Card";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -29,10 +30,12 @@ const CartScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.totalContainer}>
+      <Card style={styles.totalContainer}>
         <Text style={styles.total}>
           Total price:{" "}
-          <Text style={styles.totalAccent}>${totalAmount.toFixed(2)}</Text>
+          <Text style={styles.totalAccent}>
+            ${Math.round(totalAmount.toFixed(2) * 100) / 100}
+          </Text>
         </Text>
         <CustomButton
           title="Order Now"
@@ -42,7 +45,7 @@ const CartScreen = () => {
             dispatch(addOrder(cartItemsArray, totalAmount));
           }}
         />
-      </View>
+      </Card>
       <FlatList
         data={cartItemsArray}
         renderItem={(itemData) => (
@@ -62,7 +65,7 @@ const CartScreen = () => {
 };
 
 CartScreen.navigationOptions = {
-  headerTitle: "Your Cart",
+  headerTitle: "My Cart",
 };
 
 const styles = StyleSheet.create({
@@ -74,12 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 6,
-    backgroundColor: "#fff",
-    borderRadius: 8,
     padding: 16,
     marginBottom: 16,
   },

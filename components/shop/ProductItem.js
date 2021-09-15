@@ -9,7 +9,7 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { colors } from "../../constants/colors";
-import CustomButton from "../UI/CustomButton";
+import Card from "../UI/Card";
 
 const ProductItem = (props) => {
   let TouchableComponent = TouchableOpacity;
@@ -19,45 +19,26 @@ const ProductItem = (props) => {
   }
 
   return (
-    <View style={styles.product}>
+    <Card style={styles.product}>
       <View style={styles.touchable}>
-        <TouchableComponent onPress={props.onViewDetail} useForeground>
+        <TouchableComponent onPress={props.onPress} useForeground>
           <View style={{ flex: 1 }}>
             <Image source={{ uri: props.imageUrl }} style={styles.image} />
             <View style={styles.detailsContainer}>
               <Text style={styles.titleText}>{props.title}</Text>
               <Text style={styles.priceText}>${props.price.toFixed(2)}</Text>
             </View>
-            <View style={styles.actionsContainer}>
-              <CustomButton
-                title="View Details"
-                onPress={props.onViewDetail}
-                color={colors.secondary}
-                style={styles.btn}
-              />
-              <CustomButton
-                title="Add to Cart"
-                onPress={props.onAddToCart}
-                color={colors.primary}
-                style={styles.btn}
-              />
-            </View>
+            <View style={styles.actionsContainer}>{props.children}</View>
           </View>
         </TouchableComponent>
       </View>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
     height: 300,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 6,
-    backgroundColor: "#fff",
     marginHorizontal: 16,
     marginVertical: 8,
     // overflow: "hidden",
@@ -90,9 +71,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-  },
-  btn: {
-    width: "30%",
   },
 });
 

@@ -1,11 +1,10 @@
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import ShopNavigator from "./navigation/ShopNavigator";
+import MainDrawerNavigator from "./navigation/ShopNavigator";
 import cartReducer from "./store/reducers/cartReducer";
 import ordersReducer from "./store/reducers/ordersReducer";
 import productReducer from "./store/reducers/productReducer";
@@ -42,9 +41,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <MainDrawerNavigator />
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({});

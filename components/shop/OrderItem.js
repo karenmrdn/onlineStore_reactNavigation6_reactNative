@@ -3,12 +3,13 @@ import { View, StyleSheet, Text } from "react-native";
 import { colors } from "../../constants/colors";
 import CartItem from "./CartItem";
 import CustomButton from "../UI/CustomButton";
+import Card from "../UI/Card";
 
 const OrderItem = (props) => {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <View style={styles.orderItem}>
+    <Card style={styles.orderItem}>
       <View style={styles.summaryBlock}>
         <Text style={styles.totalAmount}>${props.amount.toFixed(2)}</Text>
         <Text style={styles.date}>{props.date}</Text>
@@ -30,18 +31,12 @@ const OrderItem = (props) => {
           ))}
         </View>
       )}
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   orderItem: {
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 6,
-    backgroundColor: "#fff",
-    borderRadius: 8,
     alignItems: "center",
     marginBottom: 16,
     marginHorizontal: 4,

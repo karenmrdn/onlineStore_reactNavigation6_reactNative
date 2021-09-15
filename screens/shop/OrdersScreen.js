@@ -24,7 +24,7 @@ const OrdersScreen = () => {
 };
 
 OrdersScreen.navigationOptions = (navData) => ({
-  headerTitle: "Your Orders",
+  headerTitle: "My Orders",
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
       <Item
