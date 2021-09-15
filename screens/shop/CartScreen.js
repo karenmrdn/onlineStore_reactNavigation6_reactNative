@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 import { colors } from "../../constants/colors";
 import CartItem from "../../components/shop/CartItem";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from "../../store/actions/cartActions";
 import { addOrder } from "../../store/actions/orderActions";
+import CustomButton from "../../components/UI/CustomButton";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const CartScreen = () => {
           Total price:{" "}
           <Text style={styles.totalAccent}>${totalAmount.toFixed(2)}</Text>
         </Text>
-        <Button
+        <CustomButton
           title="Order Now"
           color={colors.secondary}
           disabled={cartItemsArray.length === 0}
@@ -52,6 +53,7 @@ const CartScreen = () => {
             onRemove={() => {
               dispatch(removeFromCart(itemData.item.id));
             }}
+            deletable
           />
         )}
       />

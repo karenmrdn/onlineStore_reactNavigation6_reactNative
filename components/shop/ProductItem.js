@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   Platform,
   TouchableOpacity,
   TouchableNativeFeedback,
 } from "react-native";
 import { colors } from "../../constants/colors";
+import CustomButton from "../UI/CustomButton";
 
 const ProductItem = (props) => {
   let TouchableComponent = TouchableOpacity;
@@ -29,15 +29,17 @@ const ProductItem = (props) => {
               <Text style={styles.priceText}>${props.price.toFixed(2)}</Text>
             </View>
             <View style={styles.actionsContainer}>
-              <Button
+              <CustomButton
                 title="View Details"
                 onPress={props.onViewDetail}
                 color={colors.secondary}
+                style={styles.btn}
               />
-              <Button
+              <CustomButton
                 title="Add to Cart"
                 onPress={props.onAddToCart}
                 color={colors.primary}
+                style={styles.btn}
               />
             </View>
           </View>
@@ -88,6 +90,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+  },
+  btn: {
+    width: "30%",
   },
 });
 
