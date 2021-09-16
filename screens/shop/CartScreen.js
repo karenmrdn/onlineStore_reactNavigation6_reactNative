@@ -46,20 +46,26 @@ const CartScreen = () => {
           }}
         />
       </Card>
-      <FlatList
-        data={cartItemsArray}
-        renderItem={(itemData) => (
-          <CartItem
-            title={itemData.item.productTitle}
-            amount={itemData.item.sum}
-            quantity={itemData.item.quantity}
-            onRemove={() => {
-              dispatch(removeFromCart(itemData.item.id));
-            }}
-            deletable
-          />
-        )}
-      />
+      {cartItemsArray.length > 0 ? (
+        <FlatList
+          data={cartItemsArray}
+          renderItem={(itemData) => (
+            <CartItem
+              title={itemData.item.productTitle}
+              amount={itemData.item.sum}
+              quantity={itemData.item.quantity}
+              onRemove={() => {
+                dispatch(removeFromCart(itemData.item.id));
+              }}
+              deletable
+            />
+          )}
+        />
+      ) : (
+        <Text style={styles.emptyCartText}>
+          Your cart is empty yet.{"\n"}But you can always add products!
+        </Text>
+      )}
     </View>
   );
 };
@@ -86,8 +92,10 @@ const styles = StyleSheet.create({
   totalAccent: {
     color: colors.primary,
   },
-  itemsContainer: {},
-  item: {},
+  emptyCartText: {
+    fontFamily: "open-sans-bold",
+    textAlign: "center",
+  },
 });
 
 export default CartScreen;

@@ -16,7 +16,6 @@ import {
   createProduct,
   updateProduct,
 } from "../../store/actions/productActions";
-import { colors } from "../../constants/colors";
 import ValidatedInput from "../../components/UI/ValidatedInput";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
@@ -211,25 +210,6 @@ const styles = StyleSheet.create({
   listWrapper: {
     margin: 16,
     flex: 1,
-  },
-  inputBlock: {
-    marginBottom: 16,
-  },
-  label: {
-    fontFamily: "open-sans-bold",
-    textAlign: "center",
-    marginBottom: 2,
-  },
-  input: {
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
-  invalidInput: {
-    backgroundColor: colors.error.light,
-    borderColor: colors.error.main,
   },
 });
 

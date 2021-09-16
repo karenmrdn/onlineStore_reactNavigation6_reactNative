@@ -1,5 +1,11 @@
-import React from "react";
-import { FlatList, Platform, StyleSheet } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  FlatList,
+  Platform,
+  StyleSheet,
+  ActivityIndicator,
+  View,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
@@ -7,10 +13,33 @@ import CustomButton from "../../components/UI/CustomButton";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import { colors } from "../../constants/colors";
 import { addToCart } from "../../store/actions/cartActions";
+import { fetchProducts } from "../../store/actions/productActions";
 
 const ProductsOverviewScreen = (props) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const products = useSelector((state) => state.products.availableProducts);
+
+  const loadProducts = useCallback(async () => {
+    setIsLoading(true);
+    await dispatch(fetchProducts());
+    setIsLoading(false);
+  }, [setIsLoading, dispatch]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [dispatch, setIsLoading]);
+
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener(
+      "willFocus",
+      loadProducts
+    );
+
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadProducts]);
 
   const viewDetails = (id, title) => {
     props.navigation.navigate("ProductDetail", {
@@ -18,6 +47,14 @@ const ProductsOverviewScreen = (props) => {
       productTitle: title,
     });
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -74,6 +111,11 @@ ProductsOverviewScreen.navigationOptions = (navData) => ({
 });
 
 const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   btn: {
     width: "35%",
   },
