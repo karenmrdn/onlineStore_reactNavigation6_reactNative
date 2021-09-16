@@ -46,7 +46,7 @@ const UserProductsScreen = (props) => {
             onPress={() => {
               handleProductDelete(itemData.item.id);
             }}
-            color={colors.error}
+            color={colors.error.main}
             style={styles.btn}
           />
           <CustomButton
