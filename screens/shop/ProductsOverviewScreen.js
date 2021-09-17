@@ -18,16 +18,20 @@ import { fetchProducts } from "../../store/actions/productActions";
 const ProductsOverviewScreen = (props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const products = useSelector((state) => state.products.availableProducts);
 
   const loadProducts = useCallback(async () => {
-    setIsLoading(true);
+    setIsRefreshing(true);
     await dispatch(fetchProducts());
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [setIsLoading, dispatch]);
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, setIsLoading]);
 
   useEffect(() => {
@@ -58,6 +62,8 @@ const ProductsOverviewScreen = (props) => {
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={isRefreshing}
       data={products}
       renderItem={(itemData) => (
         <ProductItem
@@ -69,13 +75,13 @@ const ProductsOverviewScreen = (props) => {
           <CustomButton
             title="View Details"
             onPress={() => viewDetails(itemData.item.id, itemData.item.title)}
-            color={colors.secondary}
+            color={colors.primary}
             style={styles.btn}
           />
           <CustomButton
             title="Add to Cart"
             onPress={() => dispatch(addToCart(itemData.item))}
-            color={colors.primary}
+            color={colors.secondary}
             style={styles.btn}
           />
         </ProductItem>

@@ -1,16 +1,22 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useSelector } from "react-redux";
-import { colors } from "../../constants/colors";
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../../components/shop/CartItem";
-import { useDispatch } from "react-redux";
+import Card from "../../components/UI/Card";
+import CustomButton from "../../components/UI/CustomButton";
+import { colors } from "../../constants/colors";
 import { removeFromCart } from "../../store/actions/cartActions";
 import { addOrder } from "../../store/actions/orderActions";
-import CustomButton from "../../components/UI/CustomButton";
-import Card from "../../components/UI/Card";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItemsArray = useSelector((state) => {
     const transformedCartItems = [];
@@ -28,6 +34,12 @@ const CartScreen = () => {
     return transformedCartItems.sort((a, b) => (a.id > b.id ? 1 : -1));
   });
 
+  const handleOrderNowPress = async () => {
+    setIsLoading(true);
+    await dispatch(addOrder(cartItemsArray, totalAmount));
+    setIsLoading(false);
+  };
+
   return (
     <View style={styles.screen}>
       <Card style={styles.totalContainer}>
@@ -37,14 +49,16 @@ const CartScreen = () => {
             ${Math.round(totalAmount.toFixed(2) * 100) / 100}
           </Text>
         </Text>
-        <CustomButton
-          title="Order Now"
-          color={colors.secondary}
-          disabled={cartItemsArray.length === 0}
-          onPress={() => {
-            dispatch(addOrder(cartItemsArray, totalAmount));
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={colors.secondary} />
+        ) : (
+          <CustomButton
+            title="Order Now"
+            color={colors.secondary}
+            disabled={cartItemsArray.length === 0}
+            onPress={handleOrderNowPress}
+          />
+        )}
       </Card>
       {cartItemsArray.length > 0 ? (
         <FlatList
