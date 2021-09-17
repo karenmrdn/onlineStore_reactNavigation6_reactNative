@@ -43,10 +43,6 @@ export const fetchProducts = () => async (dispatch) => {
   }
 };
 
-export const deleteProduct = (id) => (dispatch) => {
-  dispatch({ type: DELETE_PRODUCT, id });
-};
-
 export const createProduct =
   (title, description, imageUrl, price) => async (dispatch) => {
     try {
@@ -65,6 +61,13 @@ export const createProduct =
           }),
         }
       );
+
+      if (!response.ok) {
+        throw new Error(
+          "Unexpected error occurred while loading data from the server"
+        );
+      }
+
       const responseData = await response.json();
 
       dispatch({
@@ -82,14 +85,59 @@ export const createProduct =
     }
   };
 
-export const updateProduct = (id, title, description, imageUrl) => {
-  return {
-    type: UPDATE_PRODUCT,
-    id,
-    productData: {
-      title,
-      description,
-      imageUrl,
-    },
+export const updateProduct =
+  (id, title, description, imageUrl) => async (dispatch) => {
+    try {
+      const response = await fetch(
+        `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products/${id}.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            imageUrl,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Unexpected error occurred while loading data from the server"
+        );
+      }
+
+      dispatch({
+        type: UPDATE_PRODUCT,
+        id,
+        productData: {
+          title,
+          description,
+          imageUrl,
+        },
+      });
+    } catch (error) {
+      Alert.alert("Error occurred!", error.message, [{ text: "OK" }]);
+    }
   };
+
+export const deleteProduct = (id) => async (dispatch) => {
+  try {
+    const response = await fetch(
+      `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products/${id}.json`,
+      { method: "DELETE" }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Unexpected error occurred while loading data from the server"
+      );
+    }
+
+    dispatch({ type: DELETE_PRODUCT, id });
+  } catch (error) {
+    Alert.alert("Error occurred!", error.message, [{ text: "OK" }]);
+  }
 };

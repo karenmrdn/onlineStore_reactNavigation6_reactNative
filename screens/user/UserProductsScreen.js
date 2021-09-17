@@ -1,5 +1,11 @@
-import React from "react";
-import { FlatList, StyleSheet, Alert } from "react-native";
+import React, { useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+  View,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
@@ -10,6 +16,7 @@ import { deleteProduct } from "../../store/actions/productActions";
 
 const UserProductsScreen = (props) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const userProducts = useSelector((state) => state.products.userProducts);
 
   const handleEditProduct = (id) => {
@@ -24,12 +31,22 @@ const UserProductsScreen = (props) => {
       {
         text: "Yes",
         style: "destructive",
-        onPress: () => {
-          dispatch(deleteProduct(id));
+        onPress: async () => {
+          setIsLoading(true);
+          await dispatch(deleteProduct(id));
+          setIsLoading(false);
         },
       },
     ]);
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -91,6 +108,11 @@ UserProductsScreen.navigationOptions = (navData) => ({
 const styles = StyleSheet.create({
   btn: {
     width: "30%",
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

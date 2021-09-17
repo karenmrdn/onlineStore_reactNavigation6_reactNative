@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer } from "react";
+import React, { useEffect, useCallback, useReducer, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { ScrollView } from "react-navigation";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -17,6 +18,7 @@ import {
   updateProduct,
 } from "../../store/actions/productActions";
 import ValidatedInput from "../../components/UI/ValidatedInput";
+import { colors } from "../../constants/colors";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -50,6 +52,8 @@ const formReducer = (state, action) => {
 
 const EditProductsScreen = (props) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
   const productId = props.navigation.getParam("productId");
   let editedProduct;
   if (productId) {
@@ -74,7 +78,7 @@ const EditProductsScreen = (props) => {
     formIsValid: editedProduct ? true : false,
   });
 
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert(
         "Wrong input values!",
@@ -84,8 +88,9 @@ const EditProductsScreen = (props) => {
       return;
     }
 
+    setIsLoading(true);
     if (productId) {
-      dispatch(
+      await dispatch(
         updateProduct(
           productId,
           formState.inputValues.title,
@@ -94,7 +99,7 @@ const EditProductsScreen = (props) => {
         )
       );
     } else {
-      dispatch(
+      await dispatch(
         createProduct(
           formState.inputValues.title,
           formState.inputValues.description,
@@ -103,6 +108,7 @@ const EditProductsScreen = (props) => {
         )
       );
     }
+    setIsLoading(false);
     props.navigation.goBack();
   }, [dispatch, productId, formState]);
 
@@ -121,6 +127,14 @@ const EditProductsScreen = (props) => {
     },
     [formDispatch]
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -210,6 +224,11 @@ const styles = StyleSheet.create({
   listWrapper: {
     margin: 16,
     flex: 1,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
