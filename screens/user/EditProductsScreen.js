@@ -18,7 +18,7 @@ import {
   updateProduct,
 } from "../../store/actions/productActions";
 import ValidatedInput from "../../components/UI/ValidatedInput";
-import { colors } from "../../constants/colors";
+import LoaderCentered from "../../components/UI/LoaderCentered";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -75,14 +75,14 @@ const EditProductsScreen = (props) => {
       price: editedProduct ? true : false,
       description: editedProduct ? true : false,
     },
-    formIsValid: editedProduct ? true : false,
+    formIsValid: editedProduct ? true : false,  
   });
 
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert(
         "Wrong input values!",
-        "All input must be fulfilled with correct values.",
+        "All inputs must be fulfilled with correct values.",
         [{ text: "OK" }]
       );
       return;
@@ -129,11 +129,7 @@ const EditProductsScreen = (props) => {
   );
 
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
+    return <LoaderCentered />;
   }
 
   return (
@@ -185,7 +181,7 @@ const EditProductsScreen = (props) => {
               value={formState.inputValues.description}
               isValid={!!editedProduct}
               onInputChange={inputChangeHandler}
-              errorMessage="Description must be at least 10 letters long"
+              errorMessage="Description must be at least 10 characters long"
               multiline
               numberOfLines={3}
               required
@@ -224,11 +220,6 @@ const styles = StyleSheet.create({
   listWrapper: {
     margin: 16,
     flex: 1,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

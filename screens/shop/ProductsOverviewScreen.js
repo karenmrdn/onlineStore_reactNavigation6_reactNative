@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
 import CustomButton from "../../components/UI/CustomButton";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
+import LoaderCentered from "../../components/UI/LoaderCentered";
 import { colors } from "../../constants/colors";
 import { addToCart } from "../../store/actions/cartActions";
 import { fetchProducts } from "../../store/actions/productActions";
@@ -53,11 +54,7 @@ const ProductsOverviewScreen = (props) => {
   };
 
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
+    return <LoaderCentered />;
   }
 
   return (
@@ -117,11 +114,6 @@ ProductsOverviewScreen.navigationOptions = (navData) => ({
 });
 
 const styles = StyleSheet.create({
-  centered: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   btn: {
     width: "35%",
   },

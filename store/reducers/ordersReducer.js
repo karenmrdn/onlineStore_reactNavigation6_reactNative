@@ -1,4 +1,4 @@
-import { ADD_ORDER } from "../actions/orderActions";
+import { ADD_ORDER, SET_ORDERS } from "../actions/orderActions";
 import Order from "../../models/order";
 
 const initialState = {
@@ -7,6 +7,12 @@ const initialState = {
 
 const ordersReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_ORDERS:
+      return {
+        // ...state,
+        orders: action.orders,
+      };
+
     case ADD_ORDER:
       const newOrder = new Order(
         action.orderData.id,
@@ -15,7 +21,7 @@ const ordersReducer = (state = initialState, action) => {
         action.orderData.date
       );
       return {
-        ...state,
+        // ...state,
         orders: [...state.orders, newOrder],
       };
 

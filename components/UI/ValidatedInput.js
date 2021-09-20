@@ -69,6 +69,7 @@ const ValidatedInput = (props) => {
         style={[
           styles.input,
           !inputState.isValid && inputState.touched && styles.invalidInput,
+          props.style
         ]}
         value={inputState.value}
         onChangeText={(text) => handleTextChange(text)}

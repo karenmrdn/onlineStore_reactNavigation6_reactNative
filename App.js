@@ -9,11 +9,13 @@ import cartReducer from "./store/reducers/cartReducer";
 import ordersReducer from "./store/reducers/ordersReducer";
 import productReducer from "./store/reducers/productReducer";
 import ReduxThunk from "redux-thunk";
+import authReducer from "./store/reducers/authReducer";
 
 const rootReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
   orders: ordersReducer,
+  auth: authReducer,
 });
 
 const store = createStore(

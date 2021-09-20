@@ -6,7 +6,9 @@ export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = () => async (dispatch, getState) => {
+  const userId = getState().auth.userId;
+
   try {
     const response = await fetch(
       "https://shop-reactnative-13438-default-rtdb.firebaseio.com/products.json"
@@ -25,7 +27,7 @@ export const fetchProducts = () => async (dispatch) => {
       fetchedProductsArray.push(
         new Product(
           key,
-          "u1",
+          responseData[key].ownerId,
           responseData[key].title,
           responseData[key].imageUrl,
           responseData[key].description,
@@ -37,6 +39,9 @@ export const fetchProducts = () => async (dispatch) => {
     dispatch({
       type: SET_PRODUCTS,
       products: fetchedProductsArray,
+      userProducts: fetchedProductsArray.filter(
+        (prod) => prod.ownerId === userId
+      ),
     });
   } catch (error) {
     Alert.alert("Error occurred!", error.message, [{ text: "OK" }]);
@@ -44,10 +49,13 @@ export const fetchProducts = () => async (dispatch) => {
 };
 
 export const createProduct =
-  (title, description, imageUrl, price) => async (dispatch) => {
+  (title, description, imageUrl, price) => async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
+
     try {
       const response = await fetch(
-        "https://shop-reactnative-13438-default-rtdb.firebaseio.com/products.json",
+        `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products.json?auth=${token}`,
         {
           method: "POST",
           headers: {
@@ -58,6 +66,7 @@ export const createProduct =
             description,
             imageUrl,
             price,
+            ownerId: userId,
           }),
         }
       );
@@ -78,6 +87,7 @@ export const createProduct =
           imageUrl,
           description,
           price,
+          ownerId: userId,
         },
       });
     } catch (error) {
@@ -86,10 +96,12 @@ export const createProduct =
   };
 
 export const updateProduct =
-  (id, title, description, imageUrl) => async (dispatch) => {
+  (id, title, description, imageUrl) => async (dispatch, getState) => {
+    const token = getState().auth.token;
+
     try {
       const response = await fetch(
-        `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products/${id}.json`,
+        `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
         {
           method: "PATCH",
           headers: {
@@ -123,10 +135,12 @@ export const updateProduct =
     }
   };
 
-export const deleteProduct = (id) => async (dispatch) => {
+export const deleteProduct = (id) => async (dispatch, getState) => {
+  const token = getState().auth.token;
+
   try {
     const response = await fetch(
-      `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products/${id}.json`,
+      `https://shop-reactnative-13438-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
       { method: "DELETE" }
     );
 

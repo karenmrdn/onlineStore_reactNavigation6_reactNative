@@ -1,18 +1,14 @@
 import React, { useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Alert, Text, View } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
 import CustomButton from "../../components/UI/CustomButton";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
+import LoaderCentered from "../../components/UI/LoaderCentered";
 import { colors } from "../../constants/colors";
 import { deleteProduct } from "../../store/actions/productActions";
+import CenteredText from "../../components/UI/CenteredText";
 
 const UserProductsScreen = (props) => {
   const dispatch = useDispatch();
@@ -41,10 +37,14 @@ const UserProductsScreen = (props) => {
   };
 
   if (isLoading) {
+    return <LoaderCentered />;
+  }
+
+  if (userProducts.length === 0) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
+      <CenteredText>
+        You have no products yet.{"\n"}But you can always add them!
+      </CenteredText>
     );
   }
 
