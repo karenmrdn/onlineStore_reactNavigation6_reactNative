@@ -124,6 +124,7 @@ const AuthScreen = (props) => {
               keyboardType="email-address"
               onInputChange={handleInputChange}
               value={formState.inputValues.email}
+              autoCapitalize="none"
             />
             <ValidatedInput
               label="Password"
