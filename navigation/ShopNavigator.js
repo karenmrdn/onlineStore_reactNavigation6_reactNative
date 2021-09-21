@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, SafeAreaView, View } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createDrawerNavigator } from "react-navigation-drawer";
+import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
 import { colors } from "../constants/colors";
 import CartScreen from "../screens/shop/CartScreen";
@@ -12,6 +12,10 @@ import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import EditProductsScreen from "../screens/user/EditProductsScreen";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
 import AuthScreen from "../screens/user/AuthScreen";
+import StartupScreen from "../screens/StartupScreen";
+import CustomButton from "../components/UI/CustomButton";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/actions/authActions";
 
 const isAndroid = Platform.OS === "android";
 
@@ -99,6 +103,25 @@ const DrawerNavigator = createDrawerNavigator(
         marginTop: 48,
       },
     },
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      return (
+        <View style={{ flex: 1 }}>
+          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+            <DrawerItems {...props} />
+            <CustomButton
+              title="Logout"
+              color={colors.primary}
+              onPress={() => {
+                dispatch(logout());
+                // props.navigation.navigate("Auth");
+              }}
+              style={{ margin: 16 }}
+            />
+          </SafeAreaView>
+        </View>
+      );
+    },
   }
 );
 
@@ -112,6 +135,7 @@ const AuthNavigator = createStackNavigator(
 );
 
 const MainNavigator = createSwitchNavigator({
+  Startup: StartupScreen,
   Auth: AuthNavigator,
   Shop: DrawerNavigator,
 });

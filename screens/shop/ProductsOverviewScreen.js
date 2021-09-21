@@ -26,7 +26,7 @@ const ProductsOverviewScreen = (props) => {
     setIsRefreshing(true);
     await dispatch(fetchProducts());
     setIsRefreshing(false);
-  }, [setIsLoading, dispatch]);
+  }, [setIsRefreshing, dispatch]);
 
   useEffect(() => {
     setIsLoading(true);

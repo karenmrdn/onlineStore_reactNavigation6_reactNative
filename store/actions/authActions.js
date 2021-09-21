@@ -1,4 +1,49 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+let timerId;
+
+const saveDataToStorage = (token, userId, expirationDate) => {
+  AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({
+      token,
+      userId,
+      expirationDate: expirationDate.toISOString(),
+    })
+  );
+};
+
 export const AUTHENTICATE = "AUTHENTICATE";
+export const CHECK_AUTH_DATA = "CHECK_AUTH_DATA";
+export const LOGOUT = "LOGOUT";
+
+const setLogoutTimer = (expirationTimeInMilliseconds) => (dispatch) => {
+  timerId = setTimeout(() => {
+    dispatch(logout());
+  }, expirationTimeInMilliseconds);
+};
+
+export const checkAuthData =
+  (userId, token, expirationTimeInMilliseconds) => async (dispatch) => {
+    dispatch(setLogoutTimer(expirationTimeInMilliseconds));
+    dispatch({
+      type: CHECK_AUTH_DATA,
+      userId,
+      token,
+    });
+  };
+
+export const logout = () => {
+  if (timerId) {
+    clearTimeout(timerId);
+  }
+
+  // This task is asynchronous, but we don't have to wait,
+  // because we are not interested in what it will return
+  AsyncStorage.removeItem("userData");
+
+  return { type: LOGOUT };
+};
 
 export const authenticate = (email, password, isLogin) => async (dispatch) => {
   try {
@@ -60,13 +105,22 @@ export const authenticate = (email, password, isLogin) => async (dispatch) => {
       throw new Error(errMessage);
     }
 
-    console.log(responseData);
-
     dispatch({
       type: AUTHENTICATE,
       token: responseData.idToken,
       userId: responseData.localId,
     });
+
+    const expirationDate = new Date(
+      Date.now() + +responseData.expiresIn * 1000
+    );
+    saveDataToStorage(
+      responseData.idToken,
+      responseData.localId,
+      expirationDate
+    );
+
+    dispatch(setLogoutTimer(+responseData.expiresIn * 1000));
   } catch (error) {
     throw error;
   }

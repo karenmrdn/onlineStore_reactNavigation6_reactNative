@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import MainDrawerNavigator from "./navigation/ShopNavigator";
 import cartReducer from "./store/reducers/cartReducer";
 import ordersReducer from "./store/reducers/ordersReducer";
 import productReducer from "./store/reducers/productReducer";
 import ReduxThunk from "redux-thunk";
 import authReducer from "./store/reducers/authReducer";
+import NavigatorContainer from "./navigation/NavigatorContainer";
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <MainDrawerNavigator />
+      <NavigatorContainer />
     </Provider>
   );
 }
