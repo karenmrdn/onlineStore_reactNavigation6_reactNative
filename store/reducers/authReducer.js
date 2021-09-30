@@ -1,8 +1,13 @@
-import { AUTHENTICATE, LOGOUT } from "../actions/authActions";
+import {
+  AUTHENTICATE,
+  LOGOUT,
+  SET_DID_TRY_AUTO_LOGIN,
+} from "../actions/authActions";
 
 const initialState = {
   token: null,
   useId: null,
+  didTryAutoLogin: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -12,7 +17,12 @@ const authReducer = (state = initialState, action) => {
         // ...state,
         token: action.token,
         userId: action.userId,
+        didTryAutoLogin: true,
       };
+
+    case SET_DID_TRY_AUTO_LOGIN: {
+      return { ...state, didTryAutoLogin: true };
+    }
 
     case LOGOUT:
       return initialState;

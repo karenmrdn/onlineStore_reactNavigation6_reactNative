@@ -1,11 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {
-  FlatList,
-  Platform,
-  StyleSheet,
-  ActivityIndicator,
-  View,
-} from "react-native";
+import { FlatList, Platform, StyleSheet } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
@@ -36,13 +30,10 @@ const ProductsOverviewScreen = (props) => {
   }, [dispatch, setIsLoading]);
 
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener(
-      "willFocus",
-      loadProducts
-    );
+    const unsubscribe = props.navigation.addListener("focus", loadProducts);
 
     return () => {
-      willFocusSub.remove();
+      unsubscribe();
     };
   }, [loadProducts]);
 
@@ -87,7 +78,7 @@ const ProductsOverviewScreen = (props) => {
   );
 };
 
-ProductsOverviewScreen.navigationOptions = (navData) => ({
+export const productsOverviewOptions = (navData) => ({
   headerTitle: "All products",
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>

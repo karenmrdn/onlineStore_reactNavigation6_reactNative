@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoaderCentered from "../components/UI/LoaderCentered";
-import { checkAuthData } from "../store/actions/authActions";
+import {
+  checkAuthData,
+  setDidTryAuthLogin,
+} from "../store/actions/authActions";
 import { useDispatch } from "react-redux";
 
 const StartupScreen = (props) => {
@@ -11,7 +14,8 @@ const StartupScreen = (props) => {
     const checkIsLoggedIn = async () => {
       const userDataString = await AsyncStorage.getItem("userData");
       if (!userDataString) {
-        props.navigation.navigate("Auth");
+        // props.navigation.navigate("Auth");
+        dispatch(setDidTryAuthLogin());
         return;
       }
 
@@ -20,13 +24,14 @@ const StartupScreen = (props) => {
       const expirationDateObject = new Date(expirationDate);
 
       if (expirationDateObject <= new Date() || !token || !userId) {
-        props.navigation.navigate("Auth");
+        // props.navigation.navigate("Auth");
+        dispatch(setDidTryAuthLogin());
         return;
       }
 
       const expirationTime = expirationDateObject.getTime() - Date.now();
 
-      props.navigation.navigate("Shop");
+      // props.navigation.navigate("Shop");
       dispatch(checkAuthData(userId, token, expirationTime));
     };
 

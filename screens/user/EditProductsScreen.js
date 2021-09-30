@@ -75,7 +75,7 @@ const EditProductsScreen = (props) => {
       price: editedProduct ? true : false,
       description: editedProduct ? true : false,
     },
-    formIsValid: editedProduct ? true : false,  
+    formIsValid: editedProduct ? true : false,
   });
 
   const submitHandler = useCallback(async () => {
@@ -194,7 +194,7 @@ const EditProductsScreen = (props) => {
   );
 };
 
-EditProductsScreen.navigationOptions = (navData) => {
+export const editProductsOptions = (navData) => {
   const submit = navData.navigation.getParam("submit");
 
   return {

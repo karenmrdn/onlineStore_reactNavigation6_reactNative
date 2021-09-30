@@ -47,7 +47,7 @@ const OrdersScreen = () => {
   );
 };
 
-OrdersScreen.navigationOptions = (navData) => ({
+export const ordersOptions = (navData) => ({
   headerTitle: "My Orders",
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>

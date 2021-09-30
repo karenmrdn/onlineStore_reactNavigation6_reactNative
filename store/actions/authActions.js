@@ -16,6 +16,7 @@ const saveDataToStorage = (token, userId, expirationDate) => {
 export const AUTHENTICATE = "AUTHENTICATE";
 export const CHECK_AUTH_DATA = "CHECK_AUTH_DATA";
 export const LOGOUT = "LOGOUT";
+export const SET_DID_TRY_AUTO_LOGIN = "SET_DID_TRY_AUTO_LOGIN";
 
 const setLogoutTimer = (expirationTimeInMilliseconds) => (dispatch) => {
   timerId = setTimeout(() => {
@@ -43,6 +44,10 @@ export const logout = () => {
   AsyncStorage.removeItem("userData");
 
   return { type: LOGOUT };
+};
+
+export const setDidTryAuthLogin = () => {
+  return { type: SET_DID_TRY_AUTO_LOGIN };
 };
 
 export const authenticate = (email, password, isLogin) => async (dispatch) => {

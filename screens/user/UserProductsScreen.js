@@ -80,7 +80,7 @@ const UserProductsScreen = (props) => {
 
 const isAndroid = Platform.OS === "android";
 
-UserProductsScreen.navigationOptions = (navData) => ({
+export const userProductsOptions = (navData) => ({
   headerTitle: "My Products",
   headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
