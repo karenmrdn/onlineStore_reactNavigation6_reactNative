@@ -115,7 +115,6 @@ export const ShopNavigator = () => {
                 color={colors.primary}
                 onPress={() => {
                   dispatch(logout());
-                  // props.navigation.navigate("Auth");
                 }}
                 style={{ margin: 16 }}
               />
@@ -126,7 +125,7 @@ export const ShopNavigator = () => {
       screenOptions={{
         drawerActiveTintColor: colors.primary,
         drawerStyle: {
-          paddingTop: 48,
+          paddingTop: 32,
         },
         drawerLabelStyle: {
           fontFamily: "open-sans-bold",

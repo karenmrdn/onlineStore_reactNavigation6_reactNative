@@ -28,7 +28,7 @@ export const checkAuthData =
   (userId, token, expirationTimeInMilliseconds) => async (dispatch) => {
     dispatch(setLogoutTimer(expirationTimeInMilliseconds));
     dispatch({
-      type: CHECK_AUTH_DATA,
+      type: AUTHENTICATE,
       userId,
       token,
     });
