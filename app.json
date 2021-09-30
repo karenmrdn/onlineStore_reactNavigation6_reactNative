@@ -1,28 +1,40 @@
 {
   "expo": {
-    "name": "08-shop-app",
-    "slug": "08-shop-app",
+    "name": "Online store",
+    "slug": "online-store",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/cartIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/cartIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.karenmrdn.onlineStore",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.karenmrdn.onlineStore",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/cartIcon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "KEY SHOULD BE HERE"
+        }
       }
     },
     "web": {
