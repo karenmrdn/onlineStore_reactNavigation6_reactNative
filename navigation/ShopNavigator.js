@@ -124,9 +124,12 @@ export const ShopNavigator = () => {
         );
       }}
       screenOptions={{
-        activeTintColor: colors.primary,
+        drawerActiveTintColor: colors.primary,
         drawerStyle: {
           paddingTop: 48,
+        },
+        drawerLabelStyle: {
+          fontFamily: "open-sans-bold",
         },
       }}
     >
