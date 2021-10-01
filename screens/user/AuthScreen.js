@@ -85,7 +85,7 @@ const AuthScreen = (props) => {
       // props.navigation.navigate("Shop");
     } catch (error) {
       setIsLoading(false);
-      Alert.alert("Error occurred!regfdgd", error.message, [{ text: "OK" }]);
+      Alert.alert("Error occurred!", error.message, [{ text: "OK" }]);
     }
   };
 

@@ -8,8 +8,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  Text,
+  ScrollView,
 } from "react-native";
-import { ScrollView } from "react-navigation";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +20,8 @@ import {
 } from "../../store/actions/productActions";
 import ValidatedInput from "../../components/UI/ValidatedInput";
 import LoaderCentered from "../../components/UI/LoaderCentered";
+
+const isAndroid = Platform.OS === "android";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -54,7 +57,8 @@ const EditProductsScreen = (props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const productId = props.navigation.getParam("productId");
+  const productId = props.route.params?.productId;
+
   let editedProduct;
   if (productId) {
     editedProduct = useSelector((state) =>
@@ -113,7 +117,18 @@ const EditProductsScreen = (props) => {
   }, [dispatch, productId, formState]);
 
   useEffect(() => {
-    props.navigation.setParams({ submit: submitHandler });
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Save"
+            iconName={isAndroid ? "md-checkmark" : "ios-checkmark"}
+            iconSize={23}
+            onPress={submitHandler}
+          />
+        </HeaderButtons>
+      ),
+    });
   }, [submitHandler]);
 
   const inputChangeHandler = useCallback(
@@ -133,7 +148,11 @@ const EditProductsScreen = (props) => {
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={isAndroid ? "height" : "padding"}
+      keyboardVerticalOffset={100}
+    >
       <ScrollView style={{ flex: 1 }}>
         <TouchableWithoutFeedback
           onPress={() => Keyboard.dismiss()}
@@ -195,24 +214,10 @@ const EditProductsScreen = (props) => {
 };
 
 export const editProductsOptions = (navData) => {
-  const submit = navData.navigation.getParam("submit");
-
   return {
-    headerTitle: navData.navigation.getParam("productId")
+    headerTitle: navData.route.params?.productId
       ? "Edit Product"
       : "Add Product",
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title="Save"
-          iconName={
-            Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
-          }
-          iconSize={23}
-          onPress={submit}
-        />
-      </HeaderButtons>
-    ),
   };
 };
 

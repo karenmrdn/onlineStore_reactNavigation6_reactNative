@@ -8,7 +8,7 @@ import CustomButton from "../../components/UI/CustomButton";
 
 const ProductDetailScreen = (props) => {
   const dispatch = useDispatch();
-  const productId = props.navigation.getParam("productId");
+  const productId = props.route.params.productId;
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((prod) => prod.id === productId)
   );
@@ -33,7 +33,7 @@ const ProductDetailScreen = (props) => {
 
 export const productDetailOptions = (navData) => {
   return {
-    headerTitle: navData.navigation.getParam("productTitle"),
+    headerTitle: navData.route.params.productTitle,
   };
 };
 
