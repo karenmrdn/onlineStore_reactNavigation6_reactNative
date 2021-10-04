@@ -22,13 +22,14 @@ const CartScreen = () => {
     const transformedCartItems = [];
 
     for (const key in state.cart.items) {
-      const cartItemObj = state.cart.items;
+      const cartItemObj = state.cart.items[key];
       transformedCartItems.push({
         id: key,
-        productTitle: cartItemObj[key].productTitle,
-        productPrice: cartItemObj[key].productPrice,
-        quantity: cartItemObj[key].quantity,
-        sum: cartItemObj[key].sum,
+        productTitle: cartItemObj.productTitle,
+        productPrice: cartItemObj.productPrice,
+        quantity: cartItemObj.quantity,
+        sum: cartItemObj.sum,
+        productPushToken: cartItemObj.pushToken,
       });
     }
     return transformedCartItems.sort((a, b) => (a.id > b.id ? 1 : -1));

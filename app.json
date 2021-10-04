@@ -35,7 +35,8 @@
         "googleMaps": {
           "apiKey": "KEY SHOULD BE HERE"
         }
-      }
+      },
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

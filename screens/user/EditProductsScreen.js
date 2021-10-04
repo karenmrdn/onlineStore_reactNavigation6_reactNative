@@ -7,8 +7,6 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  ActivityIndicator,
-  Text,
   ScrollView,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";

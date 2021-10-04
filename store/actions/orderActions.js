@@ -76,6 +76,24 @@ export const addOrder =
           date,
         },
       });
+
+      for (const cartItem of cartItems) {
+        const pushToken = cartItem.productPushToken;
+
+        fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Accept-Encoding": "gzip, deflate",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            to: pushToken,
+            title: "Order was stored!",
+            body: `Ordered product: ${cartItem.productTitle}`,
+          }),
+        });
+      }
     } catch (error) {
       Alert.alert("Error occurred!", error.message, [{ text: "OK" }]);
     }
